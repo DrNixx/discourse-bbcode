@@ -80,6 +80,31 @@ function setupMarkdownIt(md) {
     wrap: wrap("a", "href", (tagInfo) => "#" + tagInfo.attrs._default),
   });
 
+  ruler.push("fen", {
+    tag: "fen",
+    replace(state, tagInfo, content) {
+      let token = state.push("fen", "img", 0);
+      token.attrs = [
+        ["src", "https://www.chess-online.com/img.fen?fen=" + content],
+        ["alt", ""],
+      ];
+      token.children = [];
+      return true;
+    },
+  });
+
+  ruler.push("board", {
+    tag: "board",
+    replace(state, tagInfo, content) {
+      let token = state.push("board", "a", 0);
+      token.attrs = [
+        ["src", "https://www.chess-online.com/" + content],
+      ];
+      token.children = [];
+      return true;
+    },
+  });
+
   ["left", "right", "center"].forEach((dir) => {
     md.block.bbcode.ruler.push(dir, {
       tag: dir,
